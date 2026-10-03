@@ -1,35 +1,506 @@
-from pathlib import Path
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pradeep Devgonda — Computer Science graduate, QA/Game Tester and technology enthusiast.">
+<title>Pradeep Devgonda | Portfolio</title>
 
-path = Path("/mnt/data/index.html")
-html = path.read_text(encoding="utf-8")
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-# Navigation
-html = html.replace(
-    '<li><a href="#about">About</a></li>',
-    '<li><a href="#about">About</a></li>\n            <li><a href="#achievements">Achievements</a></li>'
-)
+<style>
+:root{
+    --bg:#07090d;
+    --bg-soft:#0d1118;
+    --card:rgba(255,255,255,.055);
+    --card-hover:rgba(255,255,255,.085);
+    --text:#f4f7fb;
+    --muted:#9ba7b8;
+    --line:rgba(255,255,255,.10);
+    --accent:#65e4ff;
+    --accent-2:#8b7cff;
+    --max:1180px;
+    --ease:cubic-bezier(.2,.8,.2,1);
+}
 
-# About section: replace the two paragraphs with richer profile and facts
-old_about = """<div class="about-text reveal">
-                <p>
-                    I am a Computer Science graduate from Gadhinglaj, Maharashtra, with an interest in
-                    technology, software quality, AI/LLM work and interactive digital experiences.
-                </p>
-                <p>
-                    My background combines technical projects, QA/game-testing practice, freelancing
-                    experience and civil-services preparation. I enjoy learning how systems work,
-                    finding problems and turning ideas into practical solutions.
-                </p>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    font-family:Inter,system-ui,sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%,rgba(101,228,255,.10),transparent 28%),
+      radial-gradient(circle at 85% 25%,rgba(139,124,255,.10),transparent 30%),
+      var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    overflow-x:hidden;
+}
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.25;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:70px 70px;
+    mask-image:linear-gradient(to bottom,black,transparent 75%);
+    z-index:-2;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.container{width:min(var(--max),calc(100% - 40px));margin:auto}
+
+/* Cursor glow */
+#cursorGlow{
+    position:fixed;
+    width:360px;height:360px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(101,228,255,.09),transparent 65%);
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:-1;
+}
+
+/* Navigation */
+.nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    border-bottom:1px solid transparent;
+    transition:.35s var(--ease);
+}
+.nav.scrolled{
+    background:rgba(7,9,13,.76);
+    backdrop-filter:blur(18px);
+    border-color:var(--line);
+}
+.nav-inner{
+    height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.logo{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:1.25rem;
+    font-weight:700;
+}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{
+    color:var(--muted);
+    font-size:.92rem;
+    transition:.25s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.menu-btn{display:none;background:none;border:0;color:white;font-size:1.5rem;cursor:pointer}
+
+/* Hero */
+.hero{
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:120px 0 80px;
+    position:relative;
+}
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    align-items:center;
+    gap:70px;
+}
+.eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:7px 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.035);
+    font-size:.82rem;
+}
+.dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#6fffc1;
+    box-shadow:0 0 14px #6fffc1;
+}
+.hero h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(3.2rem,7vw,6.5rem);
+    line-height:.95;
+    letter-spacing:-.06em;
+    margin:24px 0;
+}
+.gradient{
+    background:linear-gradient(100deg,var(--text),var(--accent),#a99dff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+.hero-sub{
+    max-width:650px;
+    color:var(--muted);
+    font-size:1.08rem;
+}
+.typing{color:var(--accent);font-weight:600}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    padding:13px 19px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    transition:.3s var(--ease);
+}
+.btn-primary{
+    color:#031015;
+    background:var(--accent);
+    border-color:var(--accent);
+    font-weight:700;
+}
+.btn-secondary{background:rgba(255,255,255,.04);color:var(--text)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,.28)}
+.btn-secondary:hover{border-color:rgba(101,228,255,.45)}
+
+/* Hero visual */
+.hero-card{
+    position:relative;
+    aspect-ratio:1;
+    max-width:410px;
+    margin:auto;
+    display:grid;
+    place-items:center;
+}
+.orbit{
+    position:absolute;
+    inset:5%;
+    border:1px solid rgba(101,228,255,.22);
+    border-radius:50%;
+    animation:spin 18s linear infinite;
+}
+.orbit::before{
+    content:"";
+    position:absolute;
+    top:8%;left:50%;
+    width:10px;height:10px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 25px var(--accent);
+}
+.orbit.two{
+    inset:18%;
+    animation-duration:12s;
+    animation-direction:reverse;
+    border-color:rgba(139,124,255,.22);
+}
+.hero-avatar{
+    width:52%;
+    aspect-ratio:1;
+    border-radius:28%;
+    display:grid;
+    place-items:center;
+    background:
+      linear-gradient(145deg,rgba(101,228,255,.16),rgba(139,124,255,.12)),
+      rgba(255,255,255,.045);
+    border:1px solid var(--line);
+    box-shadow:0 30px 100px rgba(0,0,0,.45),inset 0 0 60px rgba(101,228,255,.06);
+    transform:rotate(-5deg);
+}
+.hero-avatar span{
+    font-family:"Space Grotesk";
+    font-size:clamp(3rem,7vw,5.5rem);
+    font-weight:700;
+    background:linear-gradient(135deg,var(--accent),#b2a9ff);
+    -webkit-background-clip:text;
+    background-clip:text;color:transparent;
+}
+
+/* Sections */
+section{padding:110px 0}
+.section-head{margin-bottom:42px}
+.kicker{
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+}
+.section-title{
+    font-family:"Space Grotesk";
+    font-size:clamp(2rem,4vw,3.2rem);
+    line-height:1.1;
+    margin-top:9px;
+    letter-spacing:-.04em;
+}
+.section-desc{color:var(--muted);max-width:650px;margin-top:12px}
+
+/* Cards */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+.card{
+    padding:26px;
+    border:1px solid var(--line);
+    background:var(--card);
+    border-radius:20px;
+    transition:.45s var(--ease);
+    transform-style:preserve-3d;
+}
+.card:hover{
+    background:var(--card-hover);
+    border-color:rgba(101,228,255,.25);
+    transform:translateY(-7px);
+    box-shadow:0 25px 70px rgba(0,0,0,.24);
+}
+.icon{
+    width:48px;height:48px;
+    display:grid;place-items:center;
+    border-radius:14px;
+    background:rgba(101,228,255,.08);
+    border:1px solid rgba(101,228,255,.16);
+    color:var(--accent);
+    font-size:1.25rem;
+    margin-bottom:20px;
+}
+.card h3{font-family:"Space Grotesk";margin-bottom:8px}
+.card p{color:var(--muted);font-size:.94rem}
+
+/* About */
+.about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:start;
+}
+.about-text p{color:var(--muted);margin-bottom:16px}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fact{
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(255,255,255,.035);
+}
+.fact small{display:block;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em}
+.fact strong{display:block;margin-top:3px}
+
+/* Timeline */
+.timeline{position:relative;max-width:900px}
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:10px;top:0;bottom:0;
+    width:1px;background:var(--line);
+}
+.timeline-item{
+    position:relative;
+    padding:0 0 38px 42px;
+}
+.timeline-item::before{
+    content:"";
+    position:absolute;
+    left:4px;top:8px;
+    width:13px;height:13px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--accent);
+    box-shadow:0 0 16px rgba(101,228,255,.5);
+}
+.timeline-date{color:var(--accent);font-size:.78rem;font-weight:700;letter-spacing:.08em}
+.timeline h3{font-family:"Space Grotesk";margin:4px 0}
+.timeline p{color:var(--muted);max-width:760px}
+
+/* Skills */
+.skills{display:flex;flex-wrap:wrap;gap:10px}
+.skill{
+    padding:9px 14px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.035);
+    color:#dbe5f1;
+    transition:.25s;
+}
+.skill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+/* Projects */
+.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.project{
+    min-height:270px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+.project-number{font-size:.75rem;color:var(--accent);letter-spacing:.15em}
+.project h3{font-size:1.35rem;margin:12px 0}
+.project p{color:var(--muted);font-size:.92rem}
+.project-link{
+    margin-top:24px;
+    color:var(--accent);
+    font-weight:600;
+    cursor:pointer;
+    background:none;border:0;
+    text-align:left;
+}
+
+/* Contact */
+.contact{
+    text-align:center;
+    padding:80px 30px;
+    border:1px solid var(--line);
+    border-radius:28px;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(101,228,255,.10),transparent 50%),
+      rgba(255,255,255,.035);
+}
+.contact p{color:var(--muted);max-width:600px;margin:14px auto 28px}
+.contact-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* Footer */
+footer{
+    padding:35px 0;
+    border-top:1px solid var(--line);
+    color:var(--muted);
+    font-size:.85rem;
+}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* Reveal */
+.reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .8s var(--ease),transform .8s var(--ease);
+}
+.reveal.visible{opacity:1;transform:none}
+
+/* Modal */
+.modal{
+    position:fixed;inset:0;
+    display:grid;place-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:200;
+}
+.modal.open{opacity:1;visibility:visible}
+.modal-box{
+    width:min(600px,100%);
+    background:#10151d;
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:30px;
+    transform:translateY(20px) scale(.98);
+    transition:.3s var(--ease);
+}
+.modal.open .modal-box{transform:none}
+.modal-close{
+    float:right;
+    background:none;border:0;color:var(--muted);
+    font-size:1.5rem;cursor:pointer;
+}
+.modal-box p{color:var(--muted);margin-top:12px}
+
+/* Responsive */
+@media(max-width:900px){
+    .hero-grid,.about-grid{grid-template-columns:1fr}
+    .hero{padding-top:110px}
+    .hero-card{order:-1;max-width:300px}
+    .cards,.project-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+    .container{width:min(var(--max),calc(100% - 28px))}
+    .nav-links{
+        position:absolute;top:76px;left:14px;right:14px;
+        display:none;flex-direction:column;gap:0;
+        padding:10px;
+        background:rgba(13,17,24,.96);
+        border:1px solid var(--line);
+        border-radius:16px;
+        backdrop-filter:blur(18px);
+    }
+    .nav-links.open{display:flex}
+    .nav-links a{display:block;padding:12px}
+    .menu-btn{display:block}
+    .hero h1{font-size:3.3rem}
+    .cards,.project-grid,.fact-grid{grid-template-columns:1fr}
+    section{padding:80px 0}
+    #cursorGlow{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="cursorGlow"></div>
+
+<nav class="nav" id="nav">
+    <div class="container nav-inner">
+        <a class="logo" href="#home">P<span>D</span>.</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#interests">Interests</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+<section class="hero" id="home">
+    <div class="container hero-grid">
+        <div class="reveal">
+            <div class="eyebrow"><span class="dot"></span> Available for opportunities</div>
+            <h1>Hi, I'm <span class="gradient">Pradeep.</span></h1>
+            <p class="hero-sub">
+                Computer Science graduate exploring
+                <span class="typing" id="typing"></span>
+                and building a career at the intersection of technology, quality and problem solving.
+            </p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">Explore my work ↓</a>
+                <a href="resume.html" target="_blank" class="btn btn-secondary">View Resume ↗</a>
             </div>
+        </div>
 
-            <div class="fact-grid reveal">
-                <div class="fact"><small>Education</small><strong>B.Sc. Computer Science</strong></div>
-                <div class="fact"><small>Location</small><strong>Gadhinglaj, Maharashtra</strong></div>
-                <div class="fact"><small>Focus</small><strong>QA · AI · Technology</strong></div>
-                <div class="fact"><small>Interests</small><strong>Gaming · Chess · Art</strong></div>
-            </div>"""
+        <div class="hero-card reveal">
+            <div class="orbit"></div>
+            <div class="orbit two"></div>
+            <div class="hero-avatar"><span>PD</span></div>
+        </div>
+    </div>
+</section>
 
-new_about = """<div class="about-text reveal">
+<section id="about">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="kicker">01 / About</div>
+            <h2 class="section-title">A little about me.</h2>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-text reveal">
                 <p>
                     I am a Computer Science graduate and civil-services aspirant from Gadhinglaj, Maharashtra,
                     with experience in AI data annotation, quality assurance, model evaluation and web technologies.
@@ -52,13 +523,12 @@ new_about = """<div class="about-text reveal">
                 <div class="fact"><small>Civil Services</small><strong>MPSC Rajyaseva 2025 Interview</strong></div>
                 <div class="fact"><small>Current Cycle</small><strong>MPSC Rajyaseva 2026 Mains</strong></div>
                 <div class="fact"><small>Languages</small><strong>English · Marathi · Hindi · Kannada</strong></div>
-            </div>"""
+            </div>
+        </div>
+    </div>
+</section>
 
-html = html.replace(old_about, new_about)
-
-# Add achievements section before experience
-marker = '<section id="experience">'
-achievements = r'''<section id="achievements">
+<section id="achievements">
     <div class="container">
         <div class="section-head reveal">
             <div class="kicker">02 / Achievements</div>
@@ -86,43 +556,14 @@ achievements = r'''<section id="achievements">
     </div>
 </section>
 
-'''
-html = html.replace(marker, achievements + marker)
+<section id="experience">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="kicker">03 / Journey</div>
+            <h2 class="section-title">Experience & education.</h2>
+        </div>
 
-# Renumber later sections
-html = html.replace('<div class="kicker">02 / Journey</div>', '<div class="kicker">03 / Journey</div>')
-html = html.replace('<div class="kicker">03 / Toolkit</div>', '<div class="kicker">04 / Toolkit</div>')
-html = html.replace('<div class="kicker">04 / Selected work</div>', '<div class="kicker">05 / Selected work</div>')
-html = html.replace('<div class="kicker">05 / Contact</div>', '<div class="kicker">06 / Contact</div>')
-
-# Replace experience timeline with resume-specific experience
-old_timeline = """<div class="timeline">
-            <div class="timeline-item reveal">
-                <div class="timeline-date">EDUCATION</div>
-                <h3>B.Sc. Computer Science — Shivraj College, Gadhinglaj</h3>
-                <p>Built a foundation in programming, databases, web technologies and computer science concepts.</p>
-            </div>
-
-            <div class="timeline-item reveal">
-                <div class="timeline-date">EXPERIENCE</div>
-                <h3>Innodata — AI / LLM Related Work</h3>
-                <p>Worked on content and prompt-review related tasks, with a focus on quality and evaluation.</p>
-            </div>
-
-            <div class="timeline-item reveal">
-                <div class="timeline-date">PROJECTS</div>
-                <h3>Technical & QA Practice</h3>
-                <p>Worked on web development projects and explored manual testing, game functionality testing and bug identification.</p>
-            </div>
-
-            <div class="timeline-item reveal">
-                <div class="timeline-date">CURRENT INTERESTS</div>
-                <h3>Technology + Civil Services</h3>
-                <p>Continuing to develop technical skills while preparing for competitive civil-service examinations.</p>
-            </div>
-        </div>"""
-
-new_timeline = """<div class="timeline">
+        <div class="timeline">
             <div class="timeline-item reveal">
                 <div class="timeline-date">EDUCATION</div>
                 <h3>B.Sc. Computer Science — Shivraj College of Science, Kolhapur</h3>
@@ -152,59 +593,66 @@ new_timeline = """<div class="timeline">
                 <h3>MPSC Rajyaseva 2026 — Mains</h3>
                 <p>Qualified for the 2026 mains cycle and continuing preparation alongside professional development.</p>
             </div>
-        </div>"""
+        </div>
+    </div>
+</section>
 
-html = html.replace(old_timeline, new_timeline)
+<section id="skills">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="kicker">04 / Toolkit</div>
+            <h2 class="section-title">Things I work with.</h2>
+            <p class="section-desc">A mix of programming, web, database, QA and AI/LLM-related skills.</p>
+        </div>
 
-# Skills cards
-html = html.replace(
-    '<h3>Programming</h3>\n                <p>C, C++, C#, Java basics, Python and problem solving.</p>',
-    '<h3>Programming</h3>\n                <p>Python, C, C++, C# and Java basics, with a focus on practical problem solving.</p>'
-)
-html = html.replace(
-    '<h3>Web & Database</h3>\n                <p>HTML, CSS, JavaScript, Bootstrap, MySQL and web application development.</p>',
-    '<h3>Web & Database</h3>\n                <p>HTML, CSS, JavaScript, MySQL, SQL basics, MS Excel, MS Word and web application development.</p>'
-)
-html = html.replace(
-    '<h3>QA & AI</h3>\n                <p>Manual testing, test cases, bug reporting, game testing and AI/LLM evaluation.</p>',
-    '<h3>QA & AI</h3>\n                <p>AI data annotation, multimodal evaluation, output validation, preference ranking, QA and model evaluation.</p>'
-)
+        <div class="cards">
+            <div class="card reveal">
+                <div class="icon">⌘</div>
+                <h3>Programming</h3>
+                <p>Python, C, C++, C# and Java basics, with a focus on practical problem solving.</p>
+            </div>
+            <div class="card reveal">
+                <div class="icon">◈</div>
+                <h3>Web & Database</h3>
+                <p>HTML, CSS, JavaScript, MySQL, SQL basics, MS Excel, MS Word and web application development.</p>
+            </div>
+            <div class="card reveal">
+                <div class="icon">✓</div>
+                <h3>QA & AI</h3>
+                <p>AI data annotation, multimodal evaluation, output validation, preference ranking, QA and model evaluation.</p>
+            </div>
+        </div>
 
-# Skill chips
-html = html.replace(
-    '<span class="skill">Prompt Evaluation</span>',
-    '<span class="skill">Prompt Evaluation</span>\n            <span class="skill">Multimodal Evaluation</span>\n            <span class="skill">Data Annotation</span>\n            <span class="skill">RLHF-style Ranking</span>\n            <span class="skill">MS Excel</span>\n            <span class="skill">MS Word</span>\n            <span class="skill">NetBeans IDE</span>'
-)
+        <div class="skills reveal" style="margin-top:22px">
+            <span class="skill">Python</span>
+            <span class="skill">Java</span>
+            <span class="skill">HTML</span>
+            <span class="skill">CSS</span>
+            <span class="skill">JavaScript</span>
+            <span class="skill">MySQL</span>
+            <span class="skill">Manual Testing</span>
+            <span class="skill">Game Testing</span>
+            <span class="skill">AI / LLM</span>
+            <span class="skill">Prompt Evaluation</span>
+            <span class="skill">Multimodal Evaluation</span>
+            <span class="skill">Data Annotation</span>
+            <span class="skill">RLHF-style Ranking</span>
+            <span class="skill">MS Excel</span>
+            <span class="skill">MS Word</span>
+            <span class="skill">NetBeans IDE</span>
+        </div>
+    </div>
+</section>
 
-# Replace projects with resume projects
-old_projects = """<article class="card project reveal">
-                <div>
-                    <div class="project-number">01</div>
-                    <h3>Direct Market Access</h3>
-                    <p>A web platform concept connecting farmers with consumers and wholesalers, with pricing, bidding and logistics ideas.</p>
-                </div>
-                <button class="project-link" data-title="Direct Market Access" data-text="A farmer-focused web platform designed to reduce unnecessary intermediaries and improve access to market information and buyers.">View details →</button>
-            </article>
+<section id="projects">
+    <div class="container">
+        <div class="section-head reveal">
+            <div class="kicker">05 / Selected work</div>
+            <h2 class="section-title">Projects I've explored.</h2>
+        </div>
 
+        <div class="project-grid">
             <article class="card project reveal">
-                <div>
-                    <div class="project-number">02</div>
-                    <h3>Dreamplay AI</h3>
-                    <p>An experimental text-to-2D-game pipeline using game templates, assets and an AI-assisted classification workflow.</p>
-                </div>
-                <button class="project-link" data-title="Dreamplay AI" data-text="An experimental project around generating 2D game experiences from text, using Phaser-based templates, a Flask backend and a classifier workflow.">View details →</button>
-            </article>
-
-            <article class="card project reveal">
-                <div>
-                    <div class="project-number">03</div>
-                    <h3>QA & Game Testing</h3>
-                    <p>Hands-on practice with gameplay functionality, bug identification, test execution and quality-focused observation.</p>
-                </div>
-                <button class="project-link" data-title="QA & Game Testing" data-text="Testing practice focused on gameplay functionality, reproducing issues, documenting bugs and thinking from a player's perspective.">View details →</button>
-            </article>"""
-
-new_projects = """<article class="card project reveal">
                 <div>
                     <div class="project-number">01</div>
                     <h3>AI Data Annotation</h3>
@@ -256,13 +704,12 @@ new_projects = """<article class="card project reveal">
                     <p>A C-based application project focused on storing and managing contact information.</p>
                 </div>
                 <button class="project-link" data-title="Phonebook Directory Application" data-text="A programming project for maintaining a phonebook directory and practising data management concepts in C.">View details →</button>
-            </article>"""
+            </article>
+        </div>
+    </div>
+</section>
 
-html = html.replace(old_projects, new_projects)
-
-# Add additional pursuits section before contact
-contact_marker = '<section id="contact">'
-additional = r'''<section id="interests">
+<section id="interests">
     <div class="container">
         <div class="section-head reveal">
             <div class="kicker">06 / Beyond work</div>
@@ -299,16 +746,135 @@ additional = r'''<section id="interests">
     </div>
 </section>
 
-'''
-html = html.replace(contact_marker, additional + contact_marker)
-html = html.replace('<div class="kicker">06 / Contact</div>', '<div class="kicker">07 / Contact</div>')
+<section id="contact">
+    <div class="container">
+        <div class="contact reveal">
+            <div class="kicker">07 / Contact</div>
+            <h2 class="section-title">Let's connect.</h2>
+            <p>If you'd like to discuss a project, opportunity or technology, feel free to reach out.</p>
+            <div class="contact-links">
+                <a class="btn btn-primary" href="mailto:pradeepdevgonda123@gmail.com">Email me</a>
+                <a class="btn btn-secondary" href="https://www.linkedin.com/in/pradeep-devagonda/" target="_blank" rel="noopener">LinkedIn ↗</a>
+                <a class="btn btn-secondary" href="https://github.com/ZEONpd" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
 
-# Add interests to nav
-html = html.replace(
-    '<li><a href="#projects">Projects</a></li>',
-    '<li><a href="#projects">Projects</a></li>\n            <li><a href="#interests">Interests</a></li>'
-)
+<footer>
+    <div class="container footer-inner">
+        <span>© 2026 Pradeep Devgonda</span>
+        <span>Built with HTML · CSS · JavaScript</span>
+    </div>
+</footer>
 
-# Update active nav section list to include interests automatically already via querySelectorAll.
-path.write_text(html, encoding="utf-8")
-print(f"Updated: {path}")
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+        <div class="kicker">Project</div>
+        <h2 class="section-title" id="modalTitle"></h2>
+        <p id="modalText"></p>
+    </div>
+</div>
+
+<script>
+const nav = document.getElementById("nav");
+const navLinks = document.getElementById("navLinks");
+const menuBtn = document.getElementById("menuBtn");
+const cursorGlow = document.getElementById("cursorGlow");
+
+window.addEventListener("scroll", () => {
+    nav.classList.toggle("scrolled", window.scrollY > 30);
+});
+
+menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+});
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => navLinks.classList.remove("open"));
+});
+
+/* Smooth reveal on scroll */
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if(entry.isIntersecting){
+            entry.target.style.transitionDelay = `${Math.min(index * 45, 180)}ms`;
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+/* Typing effect */
+const words = ["QA testing.", "game testing.", "AI / LLM evaluation.", "web development."];
+const typing = document.getElementById("typing");
+let wordIndex = 0, charIndex = 0, deleting = false;
+
+function typeLoop(){
+    const word = words[wordIndex];
+    typing.textContent = deleting ? word.slice(0, charIndex--) : word.slice(0, charIndex++);
+
+    if(!deleting && charIndex > word.length){
+        deleting = true;
+        setTimeout(typeLoop, 1300);
+        return;
+    }
+    if(deleting && charIndex < 0){
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        charIndex = 0;
+    }
+    setTimeout(typeLoop, deleting ? 45 : 85);
+}
+typeLoop();
+
+/* Cursor glow */
+window.addEventListener("pointermove", e => {
+    cursorGlow.animate(
+        {left:`${e.clientX}px`,top:`${e.clientY}px`},
+        {duration:450,fill:"forwards",easing:"ease-out"}
+    );
+});
+
+/* Project modal */
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+const modalClose = document.getElementById("modalClose");
+
+document.querySelectorAll(".project-link").forEach(button => {
+    button.addEventListener("click", () => {
+        modalTitle.textContent = button.dataset.title;
+        modalText.textContent = button.dataset.text;
+        modal.classList.add("open");
+    });
+});
+
+function closeModal(){ modal.classList.remove("open"); }
+modalClose.addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+
+/* Active navigation */
+const sections = document.querySelectorAll("main section[id]");
+const navAnchors = document.querySelectorAll(".nav-links a");
+
+const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            navAnchors.forEach(a => a.classList.remove("active"));
+            const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+            if(active) active.classList.add("active");
+        }
+    });
+},{rootMargin:"-35% 0px -55% 0px"});
+
+sections.forEach(section => sectionObserver.observe(section));
+</script>
+
+</body>
+</html>
